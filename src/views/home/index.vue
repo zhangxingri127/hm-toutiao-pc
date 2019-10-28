@@ -1,5 +1,6 @@
 <template>
   <el-container class="container">
+    <!-- 侧边栏 -->
     <el-aside :width="isOpen?'200px':'64px'">
       <div class="logo" :class="{isopened:!isOpen}"></div>
       <el-menu
@@ -44,8 +45,10 @@
     </el-aside>
     <el-container>
       <el-header>
+        <!-- 折叠按钮 -->
         <span class="el-icon-s-fold icon" @click="toggleMenu"></span>
         <span class="text">江苏传智播客科技教育有限公司</span>
+        <!-- 下拉菜单 -->
         <el-dropdown class="dropdown">
           <span class="el-dropdown-link">
             <img src="../../assets/avatar.jpg" alt />
@@ -58,6 +61,7 @@
           </el-dropdown-menu>
         </el-dropdown>
       </el-header>
+      <!-- 主体部分 -->
       <el-main>
         <router-view></router-view>
       </el-main>
@@ -104,7 +108,6 @@ export default {
     .dropdown {
       float: right;
       vertical-align: middle;
-
       img {
         width: 30px;
         height: 30px;
