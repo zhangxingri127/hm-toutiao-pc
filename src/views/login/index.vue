@@ -1,3 +1,4 @@
+/* eslint-disable semi */
 <template>
   <div class="container">
     <el-card>
@@ -24,6 +25,8 @@
 </template>
 
 <script>
+// eslint-disable-next-line semi
+import local from '@/utils/local';
 export default {
   data () {
     // 申明校验函数
@@ -36,7 +39,7 @@ export default {
       }
     }
     return {
-      Loginform: { mobile: '', code: '' },
+      Loginform: { mobile: '13579246810', code: '246810' },
       loginRules: {
         mobile: [
           { required: true, message: '请输入手机号', trigger: 'blur' },
@@ -55,7 +58,10 @@ export default {
         if (valid) {
           this.$http
             .post('authorizations', this.Loginform)
-            .then(() => {
+            .then(res => {
+              console.log(res.data.data)
+              // 保存用户信息
+              local.setUser(res.data.data)
               this.$router.push('/')
             })
             .catch(() => {
