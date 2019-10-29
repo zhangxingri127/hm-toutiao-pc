@@ -4,6 +4,9 @@ import 'element-ui/lib/theme-chalk/index.css'
 import App from './App.vue'
 import router from '@/router'
 import axios from '@/api'
+// 插槽及左右全局组件的插件
+import plugin from '@/components'
+Vue.use(plugin)
 
 Vue.use(ElementUI)
 Vue.config.productionTip = false

@@ -5,6 +5,7 @@ import Home from '@/views/home'
 import Welcome from '@/views/welcome'
 import NotFound from '@/views/404'
 import local from '@/utils/local'
+import Article from '@/views/article'
 Vue.use(VueRouter)
 const router = new VueRouter({
   routes: [
@@ -14,9 +15,10 @@ const router = new VueRouter({
       component: Home,
       children: [
         { path: '/', component: Welcome },
-        { path: '*', component: NotFound }
+        { path: '/article', component: Article }
       ]
-    }
+    },
+    { path: '*', component: NotFound }
   ]
 })
 // 路由导航守卫   如果没登录跳到登录界面

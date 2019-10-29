@@ -1,4 +1,5 @@
 const KEY = 'hm-toutiao-pc-85-user-key'
+// 处理用户信息
 export default {
   setUser (user) {
     const josnUser = JSON.stringify(user)

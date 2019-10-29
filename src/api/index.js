@@ -7,7 +7,7 @@ axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0/'
 axios.interceptors.request.use(config => {
   // 1. 获取token
   const user = local.getUser() || {}
-  // 2. 头部设置token
+  // 2. 头部设置token 注意:Bearer后有一个空格字符
   config.headers.Authorization = `Bearer ${user.token}`
   return config
 }, err => {
