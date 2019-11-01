@@ -3,7 +3,19 @@
 </template>
 
 <script>
-export default {}
+export default {
+  // 测试代码
+  created () {
+    this.$http
+      .get('articles')
+      .then(res => {
+        console.log(res.data)
+      })
+      .catch(() => {
+        console.log('error')
+      })
+  }
+}
 </script>
 
 <style lang="less" scoped>
