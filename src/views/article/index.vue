@@ -17,17 +17,8 @@
             <el-radio :label="4">已删除</el-radio>
           </el-radio-group>
         </el-form-item>
-
-        <el-form-item label="频道:">
-          <el-select v-model="reqParams.channel_id" placeholder="请选择" clearable>
-            <el-option
-              v-for="item in channelOptions"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            ></el-option>
-          </el-select>
-        </el-form-item>
+        <!-- 频道 -->
+        <my-channel v-model="reqParams.channel_id"></my-channel>
 
         <el-form-item label="日期:">
           <!-- v-model绑定两个值 起始日期,结束日期 -->
@@ -125,7 +116,7 @@ export default {
         per_page: 20
       },
       // 频道选项
-      channelOptions: [],
+      // channelOptions: [],
       // 日期单位
       dataArr: [],
       // 列表数据
@@ -135,17 +126,17 @@ export default {
     }
   },
   created () {
-    this.getchannelOptions()
+    // this.getchannelOptions()
     this.getarticles()
   },
   methods: {
-    // 获取频道选项数据
-    async getchannelOptions () {
-      const {
-        data: { data }
-      } = await this.$http.get('channels')
-      this.channelOptions = data.channels
-    },
+    // // 获取频道选项数据
+    // async getchannelOptions () {
+    //   const {
+    //     data: { data }
+    //   } = await this.$http.get('channels')
+    //   this.channelOptions = data.channels
+    // },
     // 获取列表信息
     async getarticles () {
       const {
@@ -180,7 +171,7 @@ export default {
     },
     // 编辑按钮
     toEdit (id) {
-      this.$router.push({ path: '/publish', qurey: id })
+      this.$router.push({ path: '/publish', query: { id } })
     },
     // 删除按钮
     async delArticle (id) {
@@ -188,7 +179,7 @@ export default {
       // 提示
       this.$message.success('删除成功')
       // 更新列表
-      this.getArticles()
+      this.getarticles()
     }
   }
 }
