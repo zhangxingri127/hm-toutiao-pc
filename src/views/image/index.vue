@@ -11,12 +11,7 @@
           <el-radio-button :label="false">全部</el-radio-button>
           <el-radio-button :label="true">收藏</el-radio-button>
         </el-radio-group>
-        <el-button
-          style="float:right;"
-          type="success"
-          size="small"
-          @click="dialogVisible = true"
-        >添加素材</el-button>
+        <el-button style="float:right;" type="success" size="small" @click="open">添加素材</el-button>
       </div>
       <!-- 照片区 -->
       <div class="img_list" v-for="item in images" :key="item.id">
@@ -45,7 +40,10 @@
       <el-dialog title="添加素材" :visible.sync="dialogVisible" width="300px">
         <el-upload
           class="avatar-uploader"
-          action="https://jsonplaceholder.typicode.com/posts/"
+          action="http://ttapi.research.itcast.cn/mp/v1_0/user/images"
+          :headers="headers"
+          name="image"
+          :on-success="handleSuccess"
           :show-file-list="false"
         >
           <img v-if="imageUrl" :src="imageUrl" class="avatar" />
@@ -57,6 +55,8 @@
 </template>
 
 <script>
+// eslint-disable-next-line semi
+import local from '@/utils/local';
 export default {
   data () {
     return {
@@ -66,17 +66,35 @@ export default {
         per_page: 10
       },
       images: [],
+      // 总条数
       total: 0,
       // 控制对话框 显示与隐藏
       dialogVisible: false,
       // 上传成功后的图片地址
-      imageUrl: null
+      imageUrl: null,
+      headers: {
+        Authorization: `Bearer ${local.getUser().token}`
+      }
     }
   },
   created () {
     this.getImages()
   },
   methods: {
+    open () {
+      this.dialogVisible = true
+      this.imageUrl = null
+    },
+    handleSuccess (res) {
+      console.log(res)
+      this.$message.success('发表成功')
+      this.imageUrl = res.data.url
+      window.setTimeout(() => {
+        this.dialogVisible = false
+        this.getImages()
+      }, 2000)
+    },
+    // 获取
     async getImages () {
       const {
         data: { data }
@@ -85,14 +103,17 @@ export default {
       this.images = data.results
       this.total = data.total_count
     },
+    // 切换收藏和全部
     toggleList () {
       this.reqParams.page = 1
       this.getImages()
     },
+    // 页码
     pager (newPage) {
       this.reqParams.page = newPage
       this.getImages()
     },
+    // 删除
     async delImages (id) {
       this.$confirm('此操作将永久删除该图片, 是否继续?', '温馨提示', {
         confirmButtonText: '确定',
@@ -112,12 +133,14 @@ export default {
           // 点击了取消
         })
     },
+    // 收藏/取消收藏
     async toggleStatus (item) {
       const {
         data: { data }
       } = await this.$http.put(`user/images/${item.id}`, {
         collect: !item.is_collected
       })
+      // 成功（改当前图片的状态，提示）
       item.is_collected = data.collect
       this.$message.success(data.collect ? '收藏成功' : '取消收藏成功')
     }

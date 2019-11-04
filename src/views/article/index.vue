@@ -42,6 +42,7 @@
         <span>根据筛选条件共查询到 {{total}} 条结果:</span>
       </div>
       <el-table :data="articles">
+        <!-- 封面 -->
         <el-table-column label="封面">
           <template slot-scope="scope">
             <el-image :src="scope.row.cover.images[0]" style="width:150px;height:100px;">
@@ -51,6 +52,7 @@
             </el-image>
           </template>
         </el-table-column>
+        <!-- 标题 -->
         <el-table-column prop="title" label="标题"></el-table-column>
         <el-table-column label="状态">
           <template slot-scope="scope">
@@ -61,6 +63,7 @@
             <el-tag v-if="scope.row.status===4" type="danger">已删除</el-tag>
           </template>
         </el-table-column>
+        <!-- 时间 -->
         <el-table-column prop="pubdate" label="发布时间"></el-table-column>
         <el-table-column label="操作" width="120">
           <template slot-scope="scope">
