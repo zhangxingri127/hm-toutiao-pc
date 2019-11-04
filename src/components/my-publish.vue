@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="box">
     <div class="btn_box">
-      <img @click="open" :src="baseUrl" alt />
+      <img @click="open" :src="value||baseUrl" alt />
     </div>
     <el-dialog :visible.sync="dialogVisible" width="750px">
       <el-tabs v-model="activeName" type="card">
@@ -26,7 +26,6 @@
           <!-- 分页 -->
           <el-pagination
             class="pager"
-            style="margin-top:20px;"
             background
             layout="prev, pager, next"
             :total="total"
@@ -91,6 +90,8 @@ export default {
       baseUrl
     }
   },
+  // 双向绑定
+  props: ['value'],
   name: 'my-publish',
   methods: {
     // 选中图片
@@ -99,11 +100,20 @@ export default {
     },
     // 对话框的确认按钮
     confirmImage () {
+      // 判断当前处于哪个卡片中
       if (this.activeName === 'image') {
-        this.baseUrl = this.selectedImageUrl
+        if (!this.selectedImageUrl) {
+          return this.$message.warning('请选择图片哦')
+        }
+        // this.baseUrl = this.selectedImageUrl
+        this.$emit('input', this.selectedImageUrl)
         this.dialogVisible = false
       } else {
-        this.baseUrl = this.uploadImageUrl
+        if (!this.uploadImageUrl) {
+          return this.$message.warning('请选择图片哦')
+        }
+        // this.baseUrl = this.uploadImageUrl
+        this.$emit('input', this.uploadImageUrl)
         this.dialogVisible = false
       }
     },
@@ -111,7 +121,7 @@ export default {
     handleSuccess (res) {
       // 预览
       this.uploadImageUrl = res.data.url
-      this.message.success('上传成功')
+      this.$message.success('上传成功')
     },
     // 打开对话框
     open () {
@@ -145,14 +155,18 @@ export default {
 </script>
 
 <style scoped lang='less'>
+.box {
+  display: inline-block;
+  margin-right: 20px;
+}
 .btn_box {
   width: 150px;
   height: 150px;
   border: 1px dashed #ddd;
+
   img {
     width: 100%;
     height: 100%;
-    display: block;
   }
 }
 .img_box {
